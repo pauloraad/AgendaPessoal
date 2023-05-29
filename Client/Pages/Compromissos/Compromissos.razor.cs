@@ -78,7 +78,7 @@ namespace Agenda.Client.Pages.Compromissos
                 }
 
             }
-            catch (System.Exception ex)
+            catch (Exception ex)
             {
                 _notificar.Notify(new NotificationMessage() { Severity = NotificationSeverity.Error, Summary = $"Error", Detail = $"Não foi possível carregar os contatos" });
             }
