@@ -60,7 +60,7 @@
                             <RadzenLabel Text="Data Nascimento" Component="DataNascimento" style="width: 100%" />
                         </RadzenColumn>
                         <RadzenColumn SizeMD="9">
-                            <RadzenDatePicker DateFormat="MM/dd/yyyy" style="display: block; width: 100%" @bind-Value="@_contato.DataNascimento" Name="DataNascimento" />
+                            <RadzenDatePicker DateFormat="dd/MM/yyyy" style="display: block; width: 100%" @bind-Value="@_contato.DataNascimento" Name="DataNascimento" />
                             <RadzenRequiredValidator Component="DataNascimento" Text="Data Nascimento é obrigatório" />
                         </RadzenColumn>
                     </RadzenRow>
