@@ -1,4 +1,5 @@
-﻿using Agenda.Server.Data;
+﻿using Agenda.Client.Pages.Compromissos;
+using Agenda.Server.Data;
 using Agenda.Server.Models.Agenda;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -25,8 +26,15 @@ namespace Agenda.Server.Controllers
                 return BadRequest(ModelState);
             }
 
-            _context.Compromisso.Add(compromisso);
-            await _context.SaveChangesAsync();
+            try
+            {
+                _context.Compromisso.Add(compromisso);
+                await _context.SaveChangesAsync();
+            }
+            catch(Exception ex)
+            {
+
+            }
 
             return CreatedAtAction(nameof(GetCompromissos), new 
             { 
@@ -68,20 +76,23 @@ namespace Agenda.Server.Controllers
 
         [HttpPost]
         public IActionResult GetCompromissos(
-            [FromBody] Compromisso contato)
+            [FromBody] Compromisso compromisso)
         {
-            if (contato == null)
+            if (compromisso == null)
             {
                 return BadRequest();
             }
 
-            var compromissoFiltrado = _context.Compromisso.AsEnumerable().Where(c => GetWhereContatoFiltrado(contato, c)).ToList();
+            var compromissoFiltrado = _context.Compromisso
+                .Include(c => c.Contato).AsEnumerable()
+                .Where(c => GetWhereContatoFiltrado(compromisso, c))
+                .ToList();
 
-            var compromissosEncontrados = compromissoFiltrado.AsEnumerable().Any()
+            var compromissosEncontrados = compromissoFiltrado.Any()
                 ? compromissoFiltrado
                 : _context.Compromisso.AsEnumerable();
 
-            if (compromissosEncontrados == null)
+            if (!compromissosEncontrados.Any())
             {
                 return NotFound();
             }
@@ -90,18 +101,18 @@ namespace Agenda.Server.Controllers
         }
 
         private static bool GetWhereContatoFiltrado(
-            Compromisso contato, 
+            Compromisso compromisso, 
             Compromisso c)
         {
-            return c.Titulo.Contains(contato.Titulo)
-                || c.Contato.NomeCompleto.Contains(contato.Contato.NomeCompleto)
-                || c.Descricao.Contains(contato.Descricao);
+            return (c.Titulo != null && c.Titulo.Contains(compromisso?.Titulo))
+                || c.Contato.NomeCompleto.ToLower().Contains(compromisso?.Contato.NomeCompleto.ToLower())
+                || (c.Descricao != null && c.Descricao.Contains(compromisso?.Descricao));
         }
 
         [HttpGet]
         public IEnumerable<Compromisso> GetCompromissos()
         {
-            return _context.Compromisso.Include(c => c.Contato);
+            return _context.Compromisso.Include(c => c.FkIdContato);
         }
 
         [HttpPut("{id}")]

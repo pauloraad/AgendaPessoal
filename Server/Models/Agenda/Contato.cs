@@ -3,6 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Agenda.Server.Models.Agenda
 {
+    [Table("Contato", Schema = "dbo")]
     public class Contato
     {
         [Key]

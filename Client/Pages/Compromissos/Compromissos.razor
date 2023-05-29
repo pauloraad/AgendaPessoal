@@ -63,7 +63,7 @@
                                                     ValueProperty="IdContato"
                                                     Placeholder="Selecionar contato"
                                                     style="display: block; width: 100%"
-                                                    @bind-Value="@_compromisso.FkIdContato"
+                                                    @bind-Value="@_contatoSelecionado.IdContato"
                                                     Name="ContatoIdContato"
                                                     SelectedValue=@_contatoSelecionado
                                                     Count=@_contatoSelecionadoCount
@@ -100,15 +100,15 @@
                         </RadzenDataGridColumn>
                         <RadzenDataGridColumn TItem="Compromisso" Property="DataCompromisso" Title="Data Compromisso">
                         </RadzenDataGridColumn>
+                        <RadzenDataGridColumn TItem="Compromisso" Property="HorarioCompromisso" Title="Horario Compromisso">
+                        </RadzenDataGridColumn>
                         <RadzenDataGridColumn TItem="Compromisso" Property="Descricao" Title="Descricao">
                         </RadzenDataGridColumn>
-                        <RadzenDataGridColumn TItem="Compromisso" Property="FkIdContato" Title="Fk Id Contato">
-                        </RadzenDataGridColumn>
-                        <RadzenDataGridColumn TItem="Compromisso" Property="HorarioCompromisso" Title="Horario Compromisso">
+                        <RadzenDataGridColumn TItem="Compromisso" Property="Contato.NomeCompleto" Title="Contato">
                         </RadzenDataGridColumn>
                         <RadzenDataGridColumn TItem="Compromisso" Property="Titulo" Title="Titulo">
                         </RadzenDataGridColumn>
-                        <RadzenDataGridColumn TItem="Compromisso" Property="Contato.Bairro" Title="Contato">
+                        <RadzenDataGridColumn TItem="Compromisso" Property="Contato.Bairro" Title="Local">
                         </RadzenDataGridColumn>
                     </Columns>
 

@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Agenda.Server.Migrations
 {
     [DbContext(typeof(AgendaContext))]
-    [Migration("20230528182140_CriacaoInicial")]
+    [Migration("20230529034334_CriacaoInicial")]
     partial class CriacaoInicial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -32,9 +32,6 @@ namespace Agenda.Server.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IdCompromisso"), 1L, 1);
 
-                    b.Property<int?>("ContatoIdContato")
-                        .HasColumnType("int");
-
                     b.Property<DateTime>("DataCompromisso")
                         .HasColumnType("datetime2");
 
@@ -52,9 +49,9 @@ namespace Agenda.Server.Migrations
 
                     b.HasKey("IdCompromisso");
 
-                    b.HasIndex("ContatoIdContato");
+                    b.HasIndex("FkIdContato");
 
-                    b.ToTable("Compromisso");
+                    b.ToTable("Compromisso", "dbo");
                 });
 
             modelBuilder.Entity("Agenda.Server.Models.Agenda.Contato", b =>
@@ -105,14 +102,16 @@ namespace Agenda.Server.Migrations
 
                     b.HasKey("IdContato");
 
-                    b.ToTable("Contato");
+                    b.ToTable("Contato", "dbo");
                 });
 
             modelBuilder.Entity("Agenda.Server.Models.Agenda.Compromisso", b =>
                 {
                     b.HasOne("Agenda.Server.Models.Agenda.Contato", "Contato")
                         .WithMany()
-                        .HasForeignKey("ContatoIdContato");
+                        .HasForeignKey("FkIdContato")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Contato");
                 });

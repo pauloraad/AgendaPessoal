@@ -9,8 +9,12 @@ namespace Agenda.Server.Migrations
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.EnsureSchema(
+                name: "dbo");
+
             migrationBuilder.CreateTable(
                 name: "Contato",
+                schema: "dbo",
                 columns: table => new
                 {
                     IdContato = table.Column<int>(type: "int", nullable: false)
@@ -35,14 +39,14 @@ namespace Agenda.Server.Migrations
 
             migrationBuilder.CreateTable(
                 name: "Compromisso",
+                schema: "dbo",
                 columns: table => new
                 {
                     IdCompromisso = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    ContatoIdContato = table.Column<int>(type: "int", nullable: true),
+                    FkIdContato = table.Column<int>(type: "int", nullable: false),
                     DataCompromisso = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Descricao = table.Column<string>(type: "nvarchar(MAX)", nullable: true),
-                    FkIdContato = table.Column<int>(type: "int", nullable: false),
                     HorarioCompromisso = table.Column<TimeSpan>(type: "time", nullable: false),
                     Titulo = table.Column<string>(type: "nvarchar(MAX)", nullable: true)
                 },
@@ -50,25 +54,30 @@ namespace Agenda.Server.Migrations
                 {
                     table.PrimaryKey("PK_Compromisso", x => x.IdCompromisso);
                     table.ForeignKey(
-                        name: "FK_Compromisso_Contato_ContatoIdContato",
-                        column: x => x.ContatoIdContato,
+                        name: "FK_Compromisso_Contato_FkIdContato",
+                        column: x => x.FkIdContato,
+                        principalSchema: "dbo",
                         principalTable: "Contato",
-                        principalColumn: "IdContato");
+                        principalColumn: "IdContato",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Compromisso_ContatoIdContato",
+                name: "IX_Compromisso_FkIdContato",
+                schema: "dbo",
                 table: "Compromisso",
-                column: "ContatoIdContato");
+                column: "FkIdContato");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Compromisso");
+                name: "Compromisso",
+                schema: "dbo");
 
             migrationBuilder.DropTable(
-                name: "Contato");
+                name: "Contato",
+                schema: "dbo");
         }
     }
 }

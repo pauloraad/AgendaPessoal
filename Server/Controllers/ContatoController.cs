@@ -120,16 +120,16 @@ namespace Agenda.Server.Controllers
             Contato contato, 
             Contato c)
         {
-            return c.Bairro.Contains(contato.Bairro) ||
-                   c.Cep.Contains(contato.Cep) ||
-                   c.Cidade.Contains(contato.Cidade) ||
-                   c.Complemento.Contains(contato.Complemento) ||
-                   c.Email.Contains(contato.Email) ||
-                   c.Estado.Contains(contato.Estado) ||
-                   c.NomeCompleto.Contains(contato.NomeCompleto) ||
-                   c.RuaAvenida.Contains(contato.RuaAvenida) ||
-                   c.Telefone1.Contains(contato.Telefone1) ||
-                   c.Telefone2.Contains(contato.Telefone2);
+            return c.Bairro.ToLower().Contains(contato.Bairro.ToLower()) ||
+                   c.Cep.ToLower().Contains(contato.Cep.ToLower()) ||
+                   c.Cidade.ToLower().Contains(contato.Cidade.ToLower()) ||
+                   c.Complemento.ToLower().Contains(contato.Complemento.ToLower()) ||
+                   c.Email.ToLower().Contains(contato.Email.ToLower()) ||
+                   c.Estado.ToLower().Contains(contato.Estado.ToLower()) ||
+                   c.NomeCompleto.ToLower().Contains(contato.NomeCompleto.ToLower()) ||
+                   c.RuaAvenida.ToLower().Contains(contato.RuaAvenida.ToLower()) ||
+                   c.Telefone1.ToLower().Contains(contato.Telefone1.ToLower()) ||
+                   c.Telefone2.ToLower().Contains(contato.Telefone2.ToLower());
         }
 
         [HttpGet]

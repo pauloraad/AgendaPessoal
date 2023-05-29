@@ -16,11 +16,11 @@ namespace Agenda.Client.Pages.Compromissos
 
         protected bool _ehEdit { get; set; } = true;
 
-        protected IEnumerable<Contato> _contatos { get; set; }
+        protected IEnumerable<Contato> _contatos { get; set; } = new List<Contato>();
 
         protected int _contatoSelecionadoCount { get; set; }
 
-        protected Contato _contatoSelecionado { get; set; }
+        protected Contato _contatoSelecionado { get; set; } = new Contato();
 
         [Inject]
         protected ContatoService _contatoService { get; set; }
@@ -63,20 +63,8 @@ namespace Agenda.Client.Pages.Compromissos
             try
             {
                 var result = await _contatoService.GetContatosPorNome(args.Filter);
-                _contatoSelecionado = result.FirstOrDefault();
                 _contatoSelecionadoCount = result.Count();
                 _contatos = result.ToList();
-
-                if (!object.Equals(_compromisso.Contato, null))
-                {
-                    var valueResult = await _contatoService.GetContato(_compromisso.FkIdContato);
-                    var firstItem = valueResult;
-                    if (firstItem != null)
-                    {
-                        _contatoSelecionado = firstItem;
-                    }
-                }
-
             }
             catch (Exception ex)
             {
@@ -115,6 +103,7 @@ namespace Agenda.Client.Pages.Compromissos
             try
             {
                 _compromisso.FkIdContato = _contatoSelecionado.IdContato;
+                //_compromisso.Contato = _contatoSelecionado;
                 var result = await GetResultFormSubmit();
                 if (!_ehEdit)
                     _notificar.Notify(NotificationSeverity.Success, null, "Compromisso criado com sucesso!");
@@ -175,11 +164,12 @@ namespace Agenda.Client.Pages.Compromissos
             return new Compromisso()
             {
                 Descricao = _pesquisar,
+                //FkIdContato = _pesquisar,
+                Titulo = _pesquisar,
                 Contato = new Contato()
                 {
                     NomeCompleto = _pesquisar
-                },
-                Titulo = _pesquisar
+                }
             };
         }
     }
