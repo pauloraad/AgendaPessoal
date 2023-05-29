@@ -24,7 +24,7 @@
                             <RadzenLabel Text="Data Compromisso" Component="DataCompromisso" style="width: 100%" />
                         </RadzenColumn>
                         <RadzenColumn SizeMD="9">
-                            <RadzenDatePicker DateFormat="MM/dd/yyyy" style="display: block; width: 100%" @bind-Value="@_compromisso.DataCompromisso" Name="DataCompromisso" />
+                            <RadzenDatePicker DateFormat="dd/MM/yyyy" style="display: block; width: 100%" @bind-Value="@_compromisso.DataCompromisso" Name="DataCompromisso" />
                             <RadzenRequiredValidator Component="DataCompromisso" Text="Data Compromisso é obrigatório" />
                         </RadzenColumn>
                     </RadzenRow>
