@@ -1,0 +1,179 @@
+@page "/"
+@using Agenda.Server.Models.Agenda;
+
+<PageTitle>Contatos</PageTitle>
+<RadzenStack>
+    <RadzenRow AlignItems="AlignItems.Center">
+        <RadzenColumn Size="12" SizeMD="6">
+            <RadzenText Text="Contatos" TextStyle="TextStyle.H3" TagName="TagName.H1" style="margin: 0" />
+        </RadzenColumn>
+        <RadzenColumn Size="12" SizeMD="6">
+            <RadzenStack Orientation="Orientation.Horizontal" AlignItems="AlignItems.Center" JustifyContent="JustifyContent.End" Gap="0.5rem">
+                <RadzenSplitButton Icon="get_app" Text="Exportar" Click="@Exportar" Variant="Variant.Flat" Shade="Shade.Lighter">
+                    @*<RadzenSplitButtonItem Text="xml" Value="xml" />*@
+                </RadzenSplitButton>
+                <RadzenButton Icon="add_circle_outline" Text="Adicionar" Click="@ButtonAdicionar" Variant="Variant.Flat" />
+            </RadzenStack>
+        </RadzenColumn>
+    </RadzenRow>
+    <RadzenTextBox Placeholder="Pesquisar ..." style="display: block; width: 100%" @oninput="@Pesquisar" />
+    <RadzenRow>
+        <RadzenColumn SizeMD=12>
+            <RadzenCard style="height: 100%;margin-bottom:10px;">
+                <RadzenAlert Shade="Shade.Lighter" Variant="Variant.Flat" Size="AlertSize.Small" AlertStyle="AlertStyle.Danger" Visible="@_erroVisivel">Não foi possível salvar o contato</RadzenAlert>
+                <RadzenTemplateForm TItem="Contato" Data="@_contato" Visible="@(_contato != null)" Submit="@FormSubmit">
+                    <RadzenRow style="margin-bottom: 1rem">
+                        <RadzenColumn SizeMD="3">
+                            <RadzenLabel Text="Bairro" Component="Bairro" style="width: 100%" />
+                        </RadzenColumn>
+                        <RadzenColumn SizeMD="9">
+                            <RadzenTextBox style="display: block; width: 100%" @bind-Value="@_contato.Bairro" Name="Bairro" />
+                        </RadzenColumn>
+                    </RadzenRow>
+                    <RadzenRow style="margin-bottom: 1rem">
+                        <RadzenColumn SizeMD="3">
+                            <RadzenLabel Text="Cep" Component="Cep" style="width: 100%" />
+                        </RadzenColumn>
+                        <RadzenColumn SizeMD="9">
+                            <RadzenTextBox style="display: block; width: 100%" @bind-Value="@_contato.Cep" Name="Cep" />
+                            <RadzenRequiredValidator Component="Cep" Text="Cep é obrigatório" />
+                        </RadzenColumn>
+                    </RadzenRow>
+                    <RadzenRow style="margin-bottom: 1rem">
+                        <RadzenColumn SizeMD="3">
+                            <RadzenLabel Text="Cidade" Component="Cidade" style="width: 100%" />
+                        </RadzenColumn>
+                        <RadzenColumn SizeMD="9">
+                            <RadzenTextBox style="display: block; width: 100%" @bind-Value="@_contato.Cidade" Name="Cidade" />
+                        </RadzenColumn>
+                    </RadzenRow>
+                    <RadzenRow style="margin-bottom: 1rem">
+                        <RadzenColumn SizeMD="3">
+                            <RadzenLabel Text="Complemento" Component="Complemento" style="width: 100%" />
+                        </RadzenColumn>
+                        <RadzenColumn SizeMD="9">
+                            <RadzenTextBox style="display: block; width: 100%" @bind-Value="@_contato.Complemento" Name="Complemento" />
+                        </RadzenColumn>
+                    </RadzenRow>
+                    <RadzenRow style="margin-bottom: 1rem">
+                        <RadzenColumn SizeMD="3">
+                            <RadzenLabel Text="Data Nascimento" Component="DataNascimento" style="width: 100%" />
+                        </RadzenColumn>
+                        <RadzenColumn SizeMD="9">
+                            <RadzenDatePicker DateFormat="MM/dd/yyyy" style="display: block; width: 100%" @bind-Value="@_contato.DataNascimento" Name="DataNascimento" />
+                            <RadzenRequiredValidator Component="DataNascimento" Text="Data Nascimento é obrigatório" />
+                        </RadzenColumn>
+                    </RadzenRow>
+                    <RadzenRow style="margin-bottom: 1rem">
+                        <RadzenColumn SizeMD="3">
+                            <RadzenLabel Text="Email" Component="Email" style="width: 100%" />
+                        </RadzenColumn>
+                        <RadzenColumn SizeMD="9">
+                            <RadzenTextBox style="display: block; width: 100%" @bind-Value="@_contato.Email" Name="Email" />
+                        </RadzenColumn>
+                    </RadzenRow>
+                    <RadzenRow style="margin-bottom: 1rem">
+                        <RadzenColumn SizeMD="3">
+                            <RadzenLabel Text="Estado" Component="Estado" style="width: 100%" />
+                        </RadzenColumn>
+                        <RadzenColumn SizeMD="9">
+                            <RadzenTextBox style="display: block; width: 100%" @bind-Value="@_contato.Estado" Name="Estado" />
+                        </RadzenColumn>
+                    </RadzenRow>
+                    <RadzenRow style="margin-bottom: 1rem">
+                        <RadzenColumn SizeMD="3">
+                            <RadzenLabel Text="Nome Completo" Component="NomeCompleto" style="width: 100%" />
+                        </RadzenColumn>
+                        <RadzenColumn SizeMD="9">
+                            <RadzenTextBox style="display: block; width: 100%" @bind-Value="@_contato.NomeCompleto" Name="NomeCompleto" />
+                            <RadzenRequiredValidator Component="NomeCompleto" Text="Nome completo é obrigatíro" />
+                        </RadzenColumn>
+                    </RadzenRow>
+                    <RadzenRow style="margin-bottom: 1rem">
+                        <RadzenColumn SizeMD="3">
+                            <RadzenLabel Text="Numero" Component="Numero" style="width: 100%" />
+                        </RadzenColumn>
+                        <RadzenColumn SizeMD="9">
+                            <RadzenNumeric style="display: block; width: 100%" @bind-Value="@_contato.Numero" Name="Numero" />
+                            <RadzenRequiredValidator Component="Numero" Text="Numero é obrigatório" />
+                        </RadzenColumn>
+                    </RadzenRow>
+                    <RadzenRow style="margin-bottom: 1rem">
+                        <RadzenColumn SizeMD="3">
+                            <RadzenLabel Text="Rua Avenida" Component="RuaAvenida" style="width: 100%" />
+                        </RadzenColumn>
+                        <RadzenColumn SizeMD="9">
+                            <RadzenTextBox style="display: block; width: 100%" @bind-Value="@_contato.RuaAvenida" Name="RuaAvenida" />
+                        </RadzenColumn>
+                    </RadzenRow>
+                    <RadzenRow style="margin-bottom: 1rem">
+                        <RadzenColumn SizeMD="3">
+                            <RadzenLabel Text="Telefone1" Component="Telefone1" style="width: 100%" />
+                        </RadzenColumn>
+                        <RadzenColumn SizeMD="9">
+                            <RadzenTextBox style="display: block; width: 100%" @bind-Value="@_contato.Telefone1" Name="Telefone1" />
+                        </RadzenColumn>
+                    </RadzenRow>
+                    <RadzenRow style="margin-bottom: 1rem">
+                        <RadzenColumn SizeMD="3">
+                            <RadzenLabel Text="Telefone2" Component="Telefone2" style="width: 100%" />
+                        </RadzenColumn>
+                        <RadzenColumn SizeMD="9">
+                            <RadzenTextBox style="display: block; width: 100%" @bind-Value="@_contato.Telefone2" Name="Telefone2" />
+                        </RadzenColumn>
+                    </RadzenRow>
+                    <RadzenStack Orientation="Orientation.Horizontal" AlignItems="AlignItems.Center" JustifyContent="JustifyContent.End" Gap="0.5rem">
+                        <RadzenButton ButtonStyle="ButtonStyle.Primary" ButtonType="ButtonType.Submit" Icon="save" Text="Salvar" Variant="Variant.Flat" />
+                        <RadzenButton ButtonStyle="ButtonStyle.Light" Text="Cancelar" Variant="Variant.Flat" Click="@ButtonCancelar" Visible=false />
+                    </RadzenStack>
+                </RadzenTemplateForm>
+            </RadzenCard>
+        </RadzenColumn>
+    </RadzenRow>    <RadzenRow>
+        <RadzenColumn SizeMD=12>
+            <RadzenCard style="height: 100%">
+                <RadzenDataGrid @ref="_dataGrid" ColumnWidth="200px" FilterMode="FilterMode.Advanced" AllowSorting="true" ShowPagingSummary="true"
+                                Data="@_contatos" Count=_count LoadData=@DataGridCarregarDados TItem="Contato" RowSelect="@EditarLinha">
+                    <Columns>
+                        <RadzenDataGridColumn TItem="Contato" Filterable="false" Sortable="false" Width="70px" TextAlign="TextAlign.Center">
+                            <Template Context="contato">
+
+                                <RadzenButton ButtonStyle="ButtonStyle.Danger" Icon="delete" Size="ButtonSize.Medium"
+                                              Shade="Shade.Lighter" Variant="Variant.Flat"
+                                              Click=@(args => GridButtonDeletar(args, contato)) @onclick:stopPropagation="true" />
+                            </Template>
+                        </RadzenDataGridColumn>
+                        <RadzenDataGridColumn TItem="Contato" Property="IdContato" Title="Id Contato">
+                        </RadzenDataGridColumn>
+                        <RadzenDataGridColumn TItem="Contato" Property="NomeCompleto" Title="Nome Completo">
+                        </RadzenDataGridColumn>
+                        <RadzenDataGridColumn TItem="Contato" Property="DataNascimento" Title="Data Nascimento">
+                        </RadzenDataGridColumn>
+                        <RadzenDataGridColumn TItem="Contato" Property="Cep" Title="Cep">
+                        </RadzenDataGridColumn>
+                        <RadzenDataGridColumn TItem="Contato" Property="RuaAvenida" Title="Rua/Avenida">
+                        </RadzenDataGridColumn>
+                        <RadzenDataGridColumn TItem="Contato" Property="Numero" Title="Número">
+                        </RadzenDataGridColumn>
+                        <RadzenDataGridColumn TItem="Contato" Property="Complemento" Title="Complemento">
+                        </RadzenDataGridColumn>
+                        <RadzenDataGridColumn TItem="Contato" Property="Bairro" Title="Bairro">
+                        </RadzenDataGridColumn>
+                        <RadzenDataGridColumn TItem="Contato" Property="Cidade" Title="Cidade">
+                        </RadzenDataGridColumn>
+                        <RadzenDataGridColumn TItem="Contato" Property="Estado" Title="Estado">
+                        </RadzenDataGridColumn>
+                        <RadzenDataGridColumn TItem="Contato" Property="Email" Title="Email">
+                        </RadzenDataGridColumn>
+                        <RadzenDataGridColumn TItem="Contato" Property="Telefone1" Title="Telefone1">
+                        </RadzenDataGridColumn>
+                        <RadzenDataGridColumn TItem="Contato" Property="Telefone2" Title="Telefone2">
+                        </RadzenDataGridColumn>
+                    </Columns>
+
+                </RadzenDataGrid>
+            </RadzenCard>
+
+        </RadzenColumn>
+    </RadzenRow>
+</RadzenStack>
